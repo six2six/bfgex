@@ -31,8 +31,8 @@ public class Sexp {
         return expressions.size() > 0 ? expressions.get(0) : null;
     }
     
-    public Object pop() {
-        return expressions.pop();
+    public Object removeLast() {
+        return expressions.removeLast();
     }
 
     @Override

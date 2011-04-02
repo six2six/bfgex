@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 
 import static br.com.bfgex.Exp.INTERSECTION;
 import static br.com.bfgex.Exp.LITERAL;
@@ -33,8 +34,13 @@ public class Parser {
         
         Matcher matcher = POSSESSIVE_QUANTIFIERS.matcher(pattern); 
         if (matcher.find()) {
-            Integer quantifier = Integer.valueOf(matcher.group(2));
-            return parseQuantified(matcher.group(1), new Range(quantifier, quantifier));
+            Object quantifier = matcher.group(2);
+            
+            if (StringUtils.isNumeric(matcher.group(2))) {
+            	quantifier = Integer.valueOf(matcher.group(2));
+            } 
+            
+            return parseQuantified(matcher.group(1), quantifier);
         }
     
         matcher = RANGE_QUANTIFIERS.matcher(pattern); 
@@ -46,8 +52,7 @@ public class Parser {
         
         matcher = NUMBER_QUANTIFIER.matcher(pattern);
         if (matcher.find()) {
-            Integer quantifier = Integer.valueOf(matcher.group(2));
-            return parseQuantified(matcher.group(1), new Range(quantifier, quantifier));
+            return parseQuantified(matcher.group(1), Integer.valueOf(matcher.group(2)));
         }
         
         matcher = BALANCED_UNION.matcher(pattern);
@@ -108,35 +113,35 @@ public class Parser {
         return null;
     }
     
-    private static Sexp parseQuantified(String source, Range range) {
+    private static Sexp parseQuantified(String source, Object quantifier) {
         Sexp quantifiedSexp = null;
 
         if (source.matches("^[^()]*$")) {
-            quantifiedSexp =  quantifyRhs(parse(source), range);
+            quantifiedSexp =  quantifyRhs(parse(source), quantifier);
         } else if (source.matches("^(\\(.*\\))$")) {
-            quantifiedSexp = quantify(parse(source), range);
+            quantifiedSexp = quantify(parse(source), quantifier);
         } else if (source.matches("^(.*\\))$") || source.matches("^(.*[^)]+)$")) {
-            quantifiedSexp =  quantifyRhs(parse(source), range);
+            quantifiedSexp =  quantifyRhs(parse(source), quantifier);
         } else {
-            quantifiedSexp = quantify(parse(source), range);
+            quantifiedSexp = quantify(parse(source), quantifier);
         }
 
         return quantifiedSexp;
     }
 
-    private static Sexp quantifyRhs(Sexp sexp, Range range) {
+    private static Sexp quantifyRhs(Sexp sexp, Object quantifier) {
         Sexp quantifierSexp = null;
         if (sexp.first() != null && sexp.first().equals(UNION)) {
-            quantifierSexp = sexp.add(quantify((Sexp) sexp.pop(), range)); 
+            quantifierSexp = sexp.add(quantify((Sexp) sexp.removeLast(), quantifier)); 
         } else {
-            quantifierSexp = quantify(sexp, range);
+            quantifierSexp = quantify(sexp, quantifier);
         }
         
         return quantifierSexp;
     }
     
-    private static Sexp quantify(Sexp sexp, Range range) {
-        return new Sexp(QUANTIFY).add(sexp).add(range);
+    private static Sexp quantify(Sexp sexp, Object quantifier) {
+        return new Sexp(QUANTIFY).add(sexp).add(quantifier);
     }
     
     private static Sexp union(Sexp lhs, Sexp...rhs) {
@@ -173,7 +178,7 @@ public class Parser {
     }
     
     public static void main(String[] args) {
-        System.out.println(parse("(\\w{5,8})|(\\d{3})"));
+        System.out.println(parse("ab\\w+"));
     }
 
 
