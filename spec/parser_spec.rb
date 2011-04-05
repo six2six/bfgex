@@ -19,7 +19,7 @@ describe Parser do
     end
 
     it "should return a intersection with range quantifier word and digit with number quantifier" do
-      Parser.parse('(\\w{5,6})|(\\d{4})').to_s.should eql("(INTERSECTION,(QUANTIFY,(RANDOM,WORD),(5..6)),(QUANTIFY,(RANDOM,DIGIT),4))")
+      Parser.parse('(\\w{5,6})|(\\d{4})').to_s.should eql("(INTERSECTION,(QUANTIFY,(RANDOM,WORD),Range[5,6]),(QUANTIFY,(RANDOM,DIGIT),4))")
     end
 
     it "should return a union with word possessive quantify and digit with possessive quantifier" do

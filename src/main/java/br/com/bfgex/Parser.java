@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberRange;
 
 import static br.com.bfgex.Exp.INTERSECTION;
 import static br.com.bfgex.Exp.LITERAL;
@@ -47,7 +48,7 @@ public class Parser {
         if (matcher.find()) {
             Integer quantifierStart = Integer.valueOf(matcher.group(2));
             Integer quantifierEnd = Integer.valueOf(matcher.group(3));
-            return parseQuantified(matcher.group(1), new Range(quantifierStart, quantifierEnd));
+            return parseQuantified(matcher.group(1), new NumberRange(quantifierStart, quantifierEnd));
         }
         
         matcher = NUMBER_QUANTIFIER.matcher(pattern);
