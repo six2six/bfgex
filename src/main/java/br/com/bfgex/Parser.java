@@ -177,10 +177,4 @@ public class Parser {
     private static Sexp random(String value) {
         return new Sexp(RANDOM).add(Literal.get(value));
     }
-    
-    public static void main(String[] args) {
-        System.out.println(parse("ab\\w+"));
-    }
-
-
 }

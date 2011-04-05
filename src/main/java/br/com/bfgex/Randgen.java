@@ -197,8 +197,4 @@ public class Randgen {
 		}
 		return length;
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(name());
-	}
 }
