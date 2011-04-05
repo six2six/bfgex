@@ -115,7 +115,7 @@ public class Randgen {
 	
 	
 	public static String email(Integer emailLength, String domain) {
-		emailLength = getValidLength(emailLength, 40);
+		emailLength = getValidLength(emailLength, new NumberRange(3, 40));
 		domain = domain == null ? "example.org" : domain;
 		return word(emailLength - domain.length() - 1) + "@" + domain;
 	}
@@ -133,7 +133,7 @@ public class Randgen {
 	}
 	
 	public static String word(Integer length) {
-		length = getValidLength(length, 20);
+		length = getValidLength(length, new NumberRange(3, 20));
 
 		String word = pickCollection(Dictionary.getWordsByLength(length));
 		
@@ -149,7 +149,7 @@ public class Randgen {
 	}
 	
 	public static String firstName(Integer length, Gender gender) {
-		length = getValidLength(length, 10);
+		length = getValidLength(length, new NumberRange(3, 10));
 		return gender.equals(Gender.MALE) ? 
 				pickCollection(Dictionary.getMaleNameByLength(length)) : pickCollection(Dictionary.getFemaleNameByLength(length));
 	}
@@ -167,7 +167,7 @@ public class Randgen {
 	}
 	
 	public static String lastName(Integer length) {
-		length = getValidLength(length, 10);
+		length = getValidLength(length, new NumberRange(3, 10));
 		return pickCollection(Dictionary.getLastNameByLength(length));
 	}
 	
@@ -191,14 +191,10 @@ public class Randgen {
 		return firstName() + " " + lastName();
 	}
 	
-	private static Integer getValidLength(Integer length, Integer maxRandomLength) {
+	private static Integer getValidLength(Integer length, NumberRange numberRange) {
 		if (length == null) {
-			length = RandomUtils.nextInt(maxRandomLength);
+			length = pickRange(numberRange).intValue();
 		}
 		return length;
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(word(28));
 	}
 }
