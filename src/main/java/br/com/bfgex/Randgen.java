@@ -73,7 +73,7 @@ public class Randgen {
 	@SuppressWarnings("unchecked")
 	public static <T> T pickCollection(Collection<T> collection) {
 		T result = null;
-		if (!collection.isEmpty()) {
+		if (collection != null && !collection.isEmpty()) {
 			result = (T) pickArray(collection.toArray());
 		}
 		return result;
@@ -196,5 +196,9 @@ public class Randgen {
 			length = RandomUtils.nextInt(maxRandomLength);
 		}
 		return length;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(word(28));
 	}
 }
