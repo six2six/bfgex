@@ -9,6 +9,13 @@
   <name>bfgex</name>
   <packaging>jar</packaging>
 
+  <repositories>
+    <repository>
+      <id>rubygems-releases</id>
+      <url>http://gems.saumya.de/releases</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>rubygems</groupId>
@@ -46,7 +53,7 @@
       <plugin>
 	<groupId>de.saumya.mojo</groupId>
 	<artifactId>rspec-maven-plugin</artifactId>
-	<version>0.25.1</version>
+	<version>0.26.0</version>
 	<extensions>true</extensions>
         <executions>
           <execution>
