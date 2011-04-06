@@ -35,11 +35,13 @@ public class Parser {
         
         Matcher matcher = POSSESSIVE_QUANTIFIERS.matcher(pattern); 
         if (matcher.find()) {
-            Object quantifier = matcher.group(2);
+            Quantifier quantifier;
             
             if (StringUtils.isNumeric(matcher.group(2))) {
-            	quantifier = Integer.valueOf(matcher.group(2));
-            } 
+            	quantifier = new Quantifier(new NumberRange(Integer.valueOf(matcher.group(2))));
+            } else {
+                quantifier = new Quantifier(matcher.group(2));
+            }
             
             return parseQuantified(matcher.group(1), quantifier);
         }
@@ -48,12 +50,12 @@ public class Parser {
         if (matcher.find()) {
             Integer quantifierStart = Integer.valueOf(matcher.group(2));
             Integer quantifierEnd = Integer.valueOf(matcher.group(3));
-            return parseQuantified(matcher.group(1), new NumberRange(quantifierStart, quantifierEnd));
+            return parseQuantified(matcher.group(1), new Quantifier(new NumberRange(quantifierStart, quantifierEnd)));
         }
         
         matcher = NUMBER_QUANTIFIER.matcher(pattern);
         if (matcher.find()) {
-        	return parseQuantified(matcher.group(1), new NumberRange(Integer.valueOf(matcher.group(2))));
+        	return parseQuantified(matcher.group(1), new Quantifier(new NumberRange(Integer.valueOf(matcher.group(2)))));
         }
         
         matcher = BALANCED_UNION.matcher(pattern);
@@ -114,7 +116,7 @@ public class Parser {
         return null;
     }
     
-    private static Sexp parseQuantified(String source, Object quantifier) {
+    private static Sexp parseQuantified(String source, Quantifier quantifier) {
         Sexp quantifiedSexp = null;
 
         if (source.matches("^[^()]*$")) {
@@ -130,7 +132,7 @@ public class Parser {
         return quantifiedSexp;
     }
 
-    private static Sexp quantifyRhs(Sexp sexp, Object quantifier) {
+    private static Sexp quantifyRhs(Sexp sexp, Quantifier quantifier) {
         Sexp quantifierSexp = null;
         if (sexp.first() != null && sexp.first().equals(UNION)) {
             quantifierSexp = sexp.add(quantify((Sexp) sexp.removeLast(), quantifier)); 
@@ -141,7 +143,7 @@ public class Parser {
         return quantifierSexp;
     }
     
-    private static Sexp quantify(Sexp sexp, Object quantifier) {
+    private static Sexp quantify(Sexp sexp, Quantifier quantifier) {
         return new Sexp(QUANTIFY).add(sexp).add(quantifier);
     }
     

@@ -134,9 +134,14 @@ public class Randgen {
 	}
 
 	public static String word(Integer length) {
-		length = getValidLength(length, new NumberRange(3, 20));
-
-		String word = pickCollection(Dictionary.getWordsByLength(length));
+	    String word = null;
+        length = getValidLength(length, new NumberRange(3, 20));
+	    
+	    if (length == 1) {
+	        word = pickChar();
+	    } else {
+	        word = pickCollection(Dictionary.getWordsByLength(length));
+	    }
 
 		if (word == null) {
 			word = RandomStringUtils.randomAlphanumeric(length);
@@ -198,4 +203,8 @@ public class Randgen {
 		}
 		return length;
 	}
+	
+	public static void main(String[] args) {
+        System.out.println(lastName(10));
+    }
 }

@@ -36,7 +36,7 @@ public class Dictionary {
 
     public static Set<String> getLastNameByLength(Integer length) {
         if (LAST_NAMES_BY_LENGTH == null) {
-        	LAST_NAMES_BY_LENGTH = Resource.of("female_names");
+        	LAST_NAMES_BY_LENGTH = Resource.of("surnames");
         }
     	return LAST_NAMES_BY_LENGTH.get(length);
     }

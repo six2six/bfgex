@@ -2,7 +2,6 @@ package br.com.bfgex;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -13,7 +12,7 @@ public class Sexp {
         expressions.add(exp);
     }
     
-    public List<Object> getValues() {
+    public LinkedList<Object> getValues() {
         return expressions;
     }
     
@@ -35,6 +34,44 @@ public class Sexp {
         return expressions.removeLast();
     }
 
+    public String reduce() {
+        return (String) reduce(this.getValues(), null);
+    }
+    
+    private Object reduce(LinkedList<Object> expressions, Quantifier quantity) {
+        Object result = null;
+        Object operation = expressions.removeFirst();
+        
+        if (operation instanceof Exp) {
+            result = reduceExp((Exp) operation, expressions, quantity);
+        }
+        
+        return result;
+    }
+    
+    private Object reduceExp(Exp exp, LinkedList<Object> expressions, Quantifier quantity) {
+        Object result = null;
+        
+        switch (exp) {
+        case UNION:
+            result = quantity != null ? quantity.getGeneratedValue(null) : null;
+            break;
+
+        default:
+            break;
+        }
+        
+        return result;
+    }
+    
+    private Object mapReduce(LinkedList<Object> items) {
+        LinkedList<Object> reducedItems = new LinkedList<Object>();
+        for (Object item : items) {
+            reducedItems.add(reduce((LinkedList<Object>) item, null));
+        }
+        return items;
+    }
+    
     @Override
     public String toString() {
         return "(" + StringUtils.join(expressions, ",") + ")";
