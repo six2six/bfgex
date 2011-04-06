@@ -31,14 +31,18 @@ public class Randgen {
 		return pickChar().toUpperCase();
 	}
 
-	public static String pickWhiteSpace() {
-		return pickArray(new String[] {"\t", "\n", "\r"});
+	public static String pickWhiteSpaces(Integer length) {
+		return RandomStringUtils.random(length, "\t\n\r");
 	}
 	
-	public static Integer pickDigit() {
-		return new RandomDataImpl().nextInt(0, 9);
+	public static String pickDigits(Integer length) {
+		length = getValidLength(length, 10);
+		return RandomStringUtils.randomNumeric(length);
 	}
 	
+	public static String pickDigits() {
+		return pickDigits(null);
+	}
 	public static <T> T pickArray(T[] array) {
 		return array[RandomUtils.nextInt(array.length)];
 	}
@@ -199,6 +203,6 @@ public class Randgen {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(word(28));
+		System.out.println("");
 	}
 }

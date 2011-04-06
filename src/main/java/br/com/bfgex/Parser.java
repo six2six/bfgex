@@ -53,7 +53,7 @@ public class Parser {
         
         matcher = NUMBER_QUANTIFIER.matcher(pattern);
         if (matcher.find()) {
-            return parseQuantified(matcher.group(1), Integer.valueOf(matcher.group(2)));
+        	return parseQuantified(matcher.group(1), new NumberRange(Integer.valueOf(matcher.group(2))));
         }
         
         matcher = BALANCED_UNION.matcher(pattern);
