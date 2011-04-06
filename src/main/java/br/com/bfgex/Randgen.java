@@ -11,14 +11,14 @@ import org.apache.commons.math.random.RandomDataImpl;
 
 
 public class Randgen {
-	
+
 	private static NumberRange WORDS_PER_SENTENCE = new NumberRange(3, 20);
 	private static NumberRange SENTENCES_PER_PARAGRAPH = new NumberRange(3, 8);
 
 	public static boolean pickBoolean() {
 		return RandomUtils.nextBoolean();
 	}
-	
+
 	public static String pickChar() {
 		return RandomStringUtils.randomAlphabetic(1);
 	}
@@ -34,15 +34,12 @@ public class Randgen {
 	public static String pickWhiteSpaces(Integer length) {
 		return RandomStringUtils.random(length, "\t\n\r");
 	}
-	
+
 	public static String pickDigits(Integer length) {
-		length = getValidLength(length, 10);
+		length = getValidLength(length, new NumberRange(1,10));
 		return RandomStringUtils.randomNumeric(length);
 	}
-	
-	public static String pickDigits() {
-		return pickDigits(null);
-	}
+
 	public static <T> T pickArray(T[] array) {
 		return array[RandomUtils.nextInt(array.length)];
 	}
@@ -50,19 +47,19 @@ public class Randgen {
 	public static <T> T pickOne(T...args) {
 		return (T) pickArray(args);
 	}
-	
+
 	public static Number pickRange(NumberRange range) {
 		Number result = null;
 		RandomData randomData = new RandomDataImpl();
-		
+
 		if (range.getMinimumNumber() instanceof Integer && range.getMaximumNumber() instanceof Integer) {
 			result = randomData.nextInt(range.getMinimumInteger(), range.getMaximumInteger());
 		}
-	
+
 		if (range.getMinimumNumber() instanceof Long && range.getMaximumNumber() instanceof Long) {
 			result = randomData.nextLong(range.getMinimumLong(), range.getMaximumLong());
 		}
-		
+
 		if (range.getMinimumNumber() instanceof Float && range.getMaximumNumber() instanceof Float) {
 			result = randomData.nextUniform(range.getMinimumFloat(), range.getMaximumFloat());
 		}
@@ -70,10 +67,10 @@ public class Randgen {
 		if (range.getMinimumNumber() instanceof Double && range.getMaximumNumber() instanceof Double) {
 			result = randomData.nextUniform(range.getMinimumDouble(), range.getMaximumDouble());
 		}
-		
+
 		return result;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T> T pickCollection(Collection<T> collection) {
 		T result = null;
@@ -86,20 +83,20 @@ public class Randgen {
 	public static String pickAlphaNumeric() {
 		return RandomStringUtils.randomAlphanumeric(1);
 	}
-	
+
 	public static String sentence(Integer length) {
 		if (length == null) {
 			length = pickRange(WORDS_PER_SENTENCE).intValue();
 		}
 		String[] result = new String[length];
-		
+
 		for (int i = 0; i < length; i++) {
 			result[i] = word();
 		}
-		
+
 		return StringUtils.join(result, " ");
 	}
-	
+
 	public static String sentence() {
 		return sentence (null);
 	}
@@ -109,25 +106,25 @@ public class Randgen {
 			length = pickRange(SENTENCES_PER_PARAGRAPH).intValue();
 		}
 		String[] result = new String[length];
-		
+
 		for (int i = 0; i < length; i++) {
 			result[i] = sentence();
 		}
-		
+
 		return StringUtils.join(result, ".");
 	}
-	
-	
+
+
 	public static String email(Integer emailLength, String domain) {
-		emailLength = getValidLength(emailLength, 40);
+		emailLength = getValidLength(emailLength, new NumberRange(3, 40));
 		domain = domain == null ? "example.org" : domain;
 		return word(emailLength - domain.length() - 1) + "@" + domain;
 	}
-	
+
 	public static String email(Integer emailLength) {
 		return email(emailLength, null);
 	}
-	
+
 	public static String email(String domain) {
 		return email(null, domain);
 	}
@@ -135,26 +132,26 @@ public class Randgen {
 	public static String email() {
 		return email(null, null);
 	}
-	
+
 	public static String word(Integer length) {
-		length = getValidLength(length, 20);
+		length = getValidLength(length, new NumberRange(3, 20));
 
 		String word = pickCollection(Dictionary.getWordsByLength(length));
-		
+
 		if (word == null) {
 			word = RandomStringUtils.randomAlphanumeric(length);
 		}
-		
+
 		return word;
 	}
-	
+
 	public static String word() {
 		return word(null);
 	}
-	
+
 	public static String firstName(Integer length, Gender gender) {
-		length = getValidLength(length, 10);
-		return gender.equals(Gender.MALE) ? 
+		length = getValidLength(length, new NumberRange(3, 10));
+		return gender.equals(Gender.MALE) ?
 				pickCollection(Dictionary.getMaleNameByLength(length)) : pickCollection(Dictionary.getFemaleNameByLength(length));
 	}
 
@@ -165,16 +162,16 @@ public class Randgen {
 	public static String firstName() {
 		return firstName(null, pickArray(Gender.values()));
 	}
-	
+
 	public static String firstName(Gender gender) {
 		return firstName(null, gender);
 	}
-	
+
 	public static String lastName(Integer length) {
-		length = getValidLength(length, 10);
+		length = getValidLength(length, new NumberRange(3, 10));
 		return pickCollection(Dictionary.getLastNameByLength(length));
 	}
-	
+
 	public static String lastName() {
 		return lastName(null);
 	}
@@ -186,7 +183,7 @@ public class Randgen {
 	public static String name(Gender gender) {
 		return firstName(null, gender) + " " + lastName(null);
 	}
-	
+
 	public static String name(Integer length) {
 		return firstName(length) + " " + lastName(length);
 	}
@@ -194,15 +191,11 @@ public class Randgen {
 	public static String name() {
 		return firstName() + " " + lastName();
 	}
-	
-	private static Integer getValidLength(Integer length, Integer maxRandomLength) {
+
+	private static Integer getValidLength(Integer length, NumberRange numberRange) {
 		if (length == null) {
-			length = RandomUtils.nextInt(maxRandomLength);
+			length = pickRange(numberRange).intValue();
 		}
 		return length;
-	}
-	
-	public static void main(String[] args) {
-		System.out.println("");
 	}
 }
