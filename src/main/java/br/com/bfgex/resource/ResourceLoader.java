@@ -1,9 +1,6 @@
 package br.com.bfgex.resource;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,25 +10,20 @@ import java.util.Set;
 public class ResourceLoader {
 
     public static Map<Integer, Set<String>> of(String resource) {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Map<Integer, Set<String>> resourceItemsLengthMap = new HashMap<Integer, Set<String>>();
-        try {
-            Scanner sc = new Scanner(new File(URLDecoder.decode(classLoader.getResource(resource).getPath(), "UTF-8")));
+        
+        Scanner sc = new Scanner(ResourceLoader.class.getResourceAsStream(File.separator + resource), "UTF-8");
+        
+        while (sc.hasNext()) {
+            String element = sc.next();
             
-            while (sc.hasNext()) {
-                String element = sc.next();
-                
-                if (!resourceItemsLengthMap.containsKey(element.length())) {
-                    resourceItemsLengthMap.put(element.length(), new HashSet<String>());
-                }
-                resourceItemsLengthMap.get(element.length()).add(element);
+            if (!resourceItemsLengthMap.containsKey(element.length())) {
+                resourceItemsLengthMap.put(element.length(), new HashSet<String>());
             }
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("invalid file", e);
-        } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("invalid file", e);
+            resourceItemsLengthMap.get(element.length()).add(element);
         }
         
         return resourceItemsLengthMap;
     }
+    
 }
