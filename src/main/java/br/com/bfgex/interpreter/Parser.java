@@ -1,4 +1,4 @@
-package br.com.bfgex;
+package br.com.bfgex.interpreter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,11 +7,11 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberRange;
 
-import static br.com.bfgex.Exp.INTERSECTION;
-import static br.com.bfgex.Exp.LITERAL;
-import static br.com.bfgex.Exp.UNION;
-import static br.com.bfgex.Exp.QUANTIFY;
-import static br.com.bfgex.Exp.RANDOM;
+import static br.com.bfgex.interpreter.Exp.INTERSECTION;
+import static br.com.bfgex.interpreter.Exp.UNION;
+import static br.com.bfgex.interpreter.Exp.LITERAL;
+import static br.com.bfgex.interpreter.Exp.RANDOM;
+import static br.com.bfgex.interpreter.Exp.QUANTIFY;
 
 public class Parser {
     

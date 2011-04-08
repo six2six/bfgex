@@ -1,9 +1,11 @@
-package br.com.bfgex;
+package br.com.bfgex.interpreter;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.apache.commons.lang.StringUtils;
+
+import br.com.bfgex.RandomGen;
 
 public class Sexp {
     private LinkedList<Object> expressions = new LinkedList<Object>();
@@ -35,7 +37,6 @@ public class Sexp {
     }
 
     public String reduce() {
-    	System.out.println(this);
         return (String) reduce(this.getValues());
     }
     
@@ -63,7 +64,7 @@ public class Sexp {
         	result = genValue(StringUtils.join(mapReduce(expressions), ""), quantity);
         	break;
         case INTERSECTION: 
-        	result = genValue(Randgen.pickCollection(mapReduce(expressions)), quantity); 	
+        	result = genValue(reduce(((Sexp) RandomGen.pickCollection(expressions)).getValues()), quantity); 	
         	break;
         case RANDOM:
         case LITERAL: result = genValue(expressions.get(0), quantity);
@@ -93,4 +94,5 @@ public class Sexp {
     public String toString() {
         return "(" + StringUtils.join(expressions, ",") + ")";
     }
+    
 }

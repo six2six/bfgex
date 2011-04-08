@@ -1,4 +1,4 @@
-package br.com.bfgex;
+package br.com.bfgex.resource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Resource {
+public class ResourceLoader {
 
     public static Map<Integer, Set<String>> of(String resource) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

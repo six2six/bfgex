@@ -9,8 +9,10 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.math.random.RandomData;
 import org.apache.commons.math.random.RandomDataImpl;
 
+import br.com.bfgex.resource.Dictionary;
 
-public class Randgen {
+
+public class RandomGen {
 
 	private static NumberRange WORDS_PER_SENTENCE = new NumberRange(3, 20);
 	private static NumberRange SENTENCES_PER_PARAGRAPH = new NumberRange(3, 8);
@@ -203,8 +205,4 @@ public class Randgen {
 		}
 		return length;
 	}
-	
-	public static void main(String[] args) {
-        System.out.println(lastName(10));
-    }
 }

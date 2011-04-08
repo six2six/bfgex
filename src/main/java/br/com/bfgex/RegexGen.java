@@ -1,6 +1,8 @@
 package br.com.bfgex;
 
-public class Gen {
+import br.com.bfgex.interpreter.Parser;
+
+public class RegexGen {
   
 	public static String of(String pattern) {
 		return Parser.parse(pattern).reduce();

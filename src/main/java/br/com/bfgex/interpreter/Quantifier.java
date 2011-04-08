@@ -1,10 +1,13 @@
-package br.com.bfgex;
+package br.com.bfgex.interpreter;
 
 import static org.apache.commons.lang.ObjectUtils.defaultIfNull;
 
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberRange;
+
+import br.com.bfgex.RandomGen;
 
 public class Quantifier {
     
@@ -37,7 +40,7 @@ public class Quantifier {
     
     
     private String verifyReluctant(Object value) {
-        return quantity != null && quantity.equals("?") ? Randgen.pickOne("", pickValue(value, 1)) : null;
+        return quantity != null && quantity.equals("?") ? RandomGen.pickOne("", pickValue(value, 1)) : null;
     }
 
     private String verifyGreedy(Object value) {
@@ -47,7 +50,7 @@ public class Quantifier {
     private String verifyNumberRange(Object value) {
     	Integer numberValue = null;
     	if (numberRange != null ) {
-    		numberValue = Randgen.pickRange(numberRange).intValue(); 
+    		numberValue = RandomGen.pickRange(numberRange).intValue(); 
     	} else if (number != null) {
     		numberValue = number;
     	}
@@ -58,14 +61,14 @@ public class Quantifier {
         String result = null;
 
         if (value instanceof String) {
-			result = (String) value;
+			result = (String) StringUtils.repeat((String) value, length);
         } else {
             switch ((RandomLiteral) value) {
-            case DIGIT: result = Randgen.pickDigits(length);
+            case DIGIT: result = RandomGen.pickDigits(length);
                 break;
-            case SPACE: result = Randgen.pickWhiteSpaces(length);
+            case SPACE: result = RandomGen.pickWhiteSpaces(length);
                 break;
-            case WORD: result = Randgen.word(length);
+            case WORD: result = RandomGen.word(length);
                 break;
             }
         }
