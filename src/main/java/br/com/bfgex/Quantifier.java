@@ -12,10 +12,16 @@ public class Quantifier {
 
     private NumberRange numberRange;
     
+    private Integer number;
+    
     private String quantity;
     
     public Quantifier(NumberRange numberRange) {
         this.numberRange = numberRange;
+    }
+    
+    public Quantifier(Integer number) {
+    	this.number = number;
     }
     
     public Quantifier(String quantity) {
@@ -24,41 +30,50 @@ public class Quantifier {
         }
         this.quantity = quantity;
     }
+
+    public String genValue(Object value) {
+        return (String) defaultIfNull(verifyReluctant(value), defaultIfNull(verifyGreedy(value), verifyNumberRange(value))); 
+    }
     
     
-    public String verifyReluctant(Literal literal) {
-        return quantity != null && quantity.equals("?") ? Randgen.pickOne("", getLiteralValue(literal, 1)) : null;
+    private String verifyReluctant(Object value) {
+        return quantity != null && quantity.equals("?") ? Randgen.pickOne("", pickValue(value, 1)) : null;
     }
 
-    public String verifyGreedy(Literal literal) {
-        return quantity != null && quantity.matches("[+*]") ? getLiteralValue(literal, null) : null;
+    private String verifyGreedy(Object value) {
+        return quantity != null && quantity.matches("[+*]") ? pickValue(value, null) : null;
     }
     
-    public String verifyRange(Literal literal) {
-        return numberRange != null ? getLiteralValue(literal, Randgen.pickRange(numberRange).intValue()): null;
+    private String verifyNumberRange(Object value) {
+    	Integer numberValue = null;
+    	if (numberRange != null ) {
+    		numberValue = Randgen.pickRange(numberRange).intValue(); 
+    	} else if (number != null) {
+    		numberValue = number;
+    	}
+        return numberValue != null ? pickValue(value, numberValue): null;
     }
     
-    public String getGeneratedValue(Literal literal) {
-        return (String) defaultIfNull(verifyReluctant(literal), defaultIfNull(verifyGreedy(literal), verifyRange(literal))); 
-    }
-    
-    public String getGeneratedValue(Object value) {
-        return value instanceof Literal ? getGeneratedValue((Literal) value) : null; 
-    }
-    
-    private String getLiteralValue(Literal literal, Integer length) {
+    private String pickValue(Object value, Integer length) {
         String result = null;
-        
-        switch (literal) {
-        case DIGIT: result = Randgen.pickDigits(length);
-            break;
-        case SPACE: result = Randgen.pickWhiteSpaces(length);
-            break;
-        case WORD: result = Randgen.word(length);
-            break;
+
+        if (value instanceof String) {
+			result = (String) value;
+        } else {
+            switch ((RandomLiteral) value) {
+            case DIGIT: result = Randgen.pickDigits(length);
+                break;
+            case SPACE: result = Randgen.pickWhiteSpaces(length);
+                break;
+            case WORD: result = Randgen.word(length);
+                break;
+            }
         }
-        
         return result;
     }
-    
-}
+
+	@Override
+	public String toString() {
+		return defaultIfNull(quantity, defaultIfNull(number, numberRange)).toString();
+	}
+ }

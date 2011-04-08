@@ -38,7 +38,7 @@ public class Parser {
             Quantifier quantifier;
             
             if (StringUtils.isNumeric(matcher.group(2))) {
-            	quantifier = new Quantifier(new NumberRange(Integer.valueOf(matcher.group(2))));
+            	quantifier = new Quantifier(Integer.valueOf(matcher.group(2)));
             } else {
                 quantifier = new Quantifier(matcher.group(2));
             }
@@ -55,7 +55,7 @@ public class Parser {
         
         matcher = NUMBER_QUANTIFIER.matcher(pattern);
         if (matcher.find()) {
-        	return parseQuantified(matcher.group(1), new Quantifier(new NumberRange(Integer.valueOf(matcher.group(2)))));
+        	return parseQuantified(matcher.group(1), new Quantifier(Integer.valueOf(matcher.group(2))));
         }
         
         matcher = BALANCED_UNION.matcher(pattern);
@@ -177,6 +177,6 @@ public class Parser {
     }
     
     private static Sexp random(String value) {
-        return new Sexp(RANDOM).add(Literal.get(value));
+        return new Sexp(RANDOM).add(RandomLiteral.get(value));
     }
 }

@@ -35,15 +35,22 @@ public class Sexp {
     }
 
     public String reduce() {
-        return (String) reduce(this.getValues(), null);
+    	System.out.println(this);
+        return (String) reduce(this.getValues());
+    }
+    
+    private Object reduce(LinkedList<Object> expressions) {
+    	return this.reduce(expressions, null);
     }
     
     private Object reduce(LinkedList<Object> expressions, Quantifier quantity) {
         Object result = null;
-        Object operation = expressions.removeFirst();
         
-        if (operation instanceof Exp) {
-            result = reduceExp((Exp) operation, expressions, quantity);
+        if (expressions.getFirst() instanceof Exp) {
+            Exp operation = (Exp) expressions.removeFirst();
+        	result = reduceExp(operation, expressions, quantity);
+        } else if (expressions.getFirst() instanceof Sexp) {
+        	result = reduce(((Sexp) expressions.getFirst()).getValues(), quantity);
         }
         
         return result;
@@ -51,32 +58,39 @@ public class Sexp {
     
     private Object reduceExp(Exp exp, LinkedList<Object> expressions, Quantifier quantity) {
         Object result = null;
-        
         switch (exp) {
-        case UNION:
-            result = quantity != null ? quantity.getGeneratedValue(null) : null;
-            break;
-
-        default:
-            break;
+        case UNION: 
+        	result = genValue(StringUtils.join(mapReduce(expressions), ""), quantity);
+        	break;
+        case INTERSECTION: 
+        	result = genValue(Randgen.pickCollection(mapReduce(expressions)), quantity); 	
+        	break;
+        case RANDOM:
+        case LITERAL: result = genValue(expressions.get(0), quantity);
+        	break;
+        case QUANTIFY:
+        	quantity = (Quantifier) expressions.removeLast(); 
+        	result = reduce(expressions, quantity);
+        	break;
         }
-        
+
         return result;
     }
     
-    private Object mapReduce(LinkedList<Object> items) {
-        LinkedList<Object> reducedItems = new LinkedList<Object>();
-        for (Object item : items) {
-            reducedItems.add(reduce((LinkedList<Object>) item, null));
-        }
-        return items;
+    private String genValue(Object reducedValue, Quantifier quantity) {
+    	return quantity != null ? quantity.genValue(reducedValue) : (String) reducedValue;
+    }
+    
+    private LinkedList<Object> mapReduce(LinkedList<Object> expressions) {
+    	LinkedList<Object> mappedList = new LinkedList<Object>();
+    	for (Object object : expressions) {
+			mappedList.add(reduce(((Sexp) object).getValues()));
+		}
+    	return mappedList;
     }
     
     @Override
     public String toString() {
         return "(" + StringUtils.join(expressions, ",") + ")";
     }
-    
-    
-    
 }
