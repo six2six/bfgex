@@ -1,6 +1,5 @@
 package br.com.bfgex.resource;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,8 +10,7 @@ public class ResourceLoader {
 
     public static Map<Integer, Set<String>> of(String resource) {
         Map<Integer, Set<String>> resourceItemsLengthMap = new HashMap<Integer, Set<String>>();
-        
-        Scanner sc = new Scanner(ResourceLoader.class.getResourceAsStream(File.separator + resource), "UTF-8");
+        Scanner sc = new Scanner(ResourceLoader.class.getResourceAsStream("/" + resource), "UTF-8");
         
         while (sc.hasNext()) {
             String element = sc.next();
