@@ -52,7 +52,7 @@
 			<plugin>
 				<groupId>de.saumya.mojo</groupId>
 				<artifactId>rspec-maven-plugin</artifactId>
-				<version>0.26.0</version>
+				<version>0.28.3</version>
 				<extensions>true</extensions>
 				<executions>
 					<execution>
