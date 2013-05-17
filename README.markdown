@@ -1,5 +1,3 @@
-New official repository: http://github.com/six2six/bfgex
-
 regex based generation
 =========================================
 
