@@ -10,6 +10,14 @@
 	<description>random data from regex (java implementation of randexp)</description>
 	<url>https://github.com/six2six/bfgex</url>
 	
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>	    
+	</licenses>
+	
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
