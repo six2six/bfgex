@@ -1,4 +1,4 @@
-package br.com.bfgex.resource;
+package br.com.six2six.bfgex.resource;
 
 import java.util.Map;
 import java.util.Set;

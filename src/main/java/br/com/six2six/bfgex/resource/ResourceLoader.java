@@ -1,4 +1,4 @@
-package br.com.bfgex.resource;
+package br.com.six2six.bfgex.resource;
 
 import java.util.HashMap;
 import java.util.HashSet;

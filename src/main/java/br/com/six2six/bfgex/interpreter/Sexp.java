@@ -1,11 +1,11 @@
-package br.com.bfgex.interpreter;
+package br.com.six2six.bfgex.interpreter;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.apache.commons.lang.StringUtils;
 
-import br.com.bfgex.RandomGen;
+import br.com.six2six.bfgex.RandomGen;
 
 public class Sexp {
     private LinkedList<Object> expressions = new LinkedList<Object>();

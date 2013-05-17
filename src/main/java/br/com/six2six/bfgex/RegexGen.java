@@ -1,6 +1,6 @@
-package br.com.bfgex;
+package br.com.six2six.bfgex;
 
-import br.com.bfgex.interpreter.Parser;
+import br.com.six2six.bfgex.interpreter.Parser;
 
 public class RegexGen {
   

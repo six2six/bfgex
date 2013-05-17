@@ -9,7 +9,7 @@ installing:
  use like a maven dependency on your project
 
  	  <dependency>
-	     <groupId>br.com.bfgex</groupId>
+	     <groupId>br.com.six2six</groupId>
 		 <artifactId>bfgex</artifactId>
 		 <version>1.0-SNAPSHOT</version>
 	   </dependency>

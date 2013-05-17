@@ -1,4 +1,4 @@
-package br.com.bfgex.interpreter;
+package br.com.six2six.bfgex.interpreter;
 
 import java.util.Map;
 import java.util.TreeMap;

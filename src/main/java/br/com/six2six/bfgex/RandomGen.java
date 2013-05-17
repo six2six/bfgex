@@ -1,4 +1,4 @@
-package br.com.bfgex;
+package br.com.six2six.bfgex;
 
 import java.util.Collection;
 
@@ -9,7 +9,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.math.random.RandomData;
 import org.apache.commons.math.random.RandomDataImpl;
 
-import br.com.bfgex.resource.Dictionary;
+import br.com.six2six.bfgex.resource.Dictionary;
 
 
 public class RandomGen {

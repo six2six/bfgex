@@ -1,4 +1,4 @@
-package br.com.bfgex.interpreter;
+package br.com.six2six.bfgex.interpreter;
 
 import static org.apache.commons.lang.ObjectUtils.defaultIfNull;
 
@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberRange;
 
-import br.com.bfgex.RandomGen;
+import br.com.six2six.bfgex.RandomGen;
 
 public class Quantifier {
     
