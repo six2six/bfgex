@@ -1,8 +1,8 @@
 require 'java'
 
-import 'br.com.bfgex.interpreter.Parser'
-import 'br.com.bfgex.interpreter.Sexp'
-import 'br.com.bfgex.RegexGen'
+import 'br.com.six2six.bfgex.interpreter.Parser'
+import 'br.com.six2six.bfgex.interpreter.Sexp'
+import 'br.com.six2six.bfgex.RegexGen'
 
 require 'rubygems'
 require 'spec'
