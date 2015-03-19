@@ -21,6 +21,7 @@ public class ResourceLoader {
             resourceItemsLengthMap.get(element.length()).add(element);
         }
         
+        sc.close();
         return resourceItemsLengthMap;
     }
     
