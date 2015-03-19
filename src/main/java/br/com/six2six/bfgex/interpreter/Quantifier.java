@@ -62,6 +62,14 @@ public class Quantifier {
 
         if (value instanceof String) {
 			result = (String) StringUtils.repeat((String) value, length);
+        } else if (value instanceof String[]) {
+            StringBuilder sb = new StringBuilder();
+            
+            for (int i = 0; i < length; i++) {
+                sb.append(RandomGen.pickArray((String[]) value));
+            }
+            
+            result = sb.toString();
         } else {
             switch ((RandomLiteral) value) {
             case DIGIT: result = RandomGen.pickDigits(length);

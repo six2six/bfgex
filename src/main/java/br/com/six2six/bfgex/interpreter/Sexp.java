@@ -1,8 +1,10 @@
 package br.com.six2six.bfgex.interpreter;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.apache.commons.lang.CharRange;
 import org.apache.commons.lang.StringUtils;
 
 import br.com.six2six.bfgex.RandomGen;
@@ -73,6 +75,12 @@ public class Sexp {
         	quantity = (Quantifier) expressions.removeLast(); 
         	result = reduce(expressions, quantity);
         	break;
+        case CHARCLASS:
+            result = genValue(StringUtils.join(mapReduce(expressions), "").split(""), quantity == null ? new Quantifier(1) : quantity);
+            break;
+        case RANGE:
+            result = buildCharset(mapReduce(expressions));
+            break;
         }
 
         return result;
@@ -88,6 +96,21 @@ public class Sexp {
 			mappedList.add(reduce(((Sexp) object).getValues()));
 		}
     	return mappedList;
+    }
+    
+    @SuppressWarnings("unchecked")
+    private String buildCharset(LinkedList<Object> interval) {
+        char start = ((String) interval.removeFirst()).charAt(0);
+        char end = ((String) interval.removeFirst()).charAt(0);
+        
+        Iterator<Character> it = (Iterator<Character>) new CharRange(start, end).iterator();
+        
+        StringBuilder values = new StringBuilder();
+        while (it.hasNext()) {
+            values.append(it.next());
+        }
+        
+        return values.toString();
     }
     
     @Override

@@ -1,17 +1,19 @@
 package br.com.six2six.bfgex.interpreter;
 
+import static br.com.six2six.bfgex.interpreter.Exp.CHARCLASS;
+import static br.com.six2six.bfgex.interpreter.Exp.INTERSECTION;
+import static br.com.six2six.bfgex.interpreter.Exp.LITERAL;
+import static br.com.six2six.bfgex.interpreter.Exp.QUANTIFY;
+import static br.com.six2six.bfgex.interpreter.Exp.RANDOM;
+import static br.com.six2six.bfgex.interpreter.Exp.RANGE;
+import static br.com.six2six.bfgex.interpreter.Exp.UNION;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberRange;
-
-import static br.com.six2six.bfgex.interpreter.Exp.INTERSECTION;
-import static br.com.six2six.bfgex.interpreter.Exp.LITERAL;
-import static br.com.six2six.bfgex.interpreter.Exp.QUANTIFY;
-import static br.com.six2six.bfgex.interpreter.Exp.RANDOM;
-import static br.com.six2six.bfgex.interpreter.Exp.UNION;
 
 public class Parser {
     
@@ -25,6 +27,7 @@ public class Parser {
     private static Pattern UNBALANCED_UNION = Pattern.compile("^(.+)(\\(.*\\))$"); 
     private static Pattern EXPLICIT_GROUP = Pattern.compile("^\\((.*)\\)$"); 
     private static Pattern IMPLIED_GROUP = Pattern.compile("^([^()]*)(\\(.*\\))$"); 
+    private static Pattern CHARACTER_CLASS = Pattern.compile("^(.*)\\[(.*)\\]$");
     private static Pattern CUSTOM_RANDOM = Pattern.compile("^(.*)\\[\\:(.*)\\:\\]$"); 
     private static Pattern RESERVED_RANDOM = Pattern.compile("^(.*)\\\\([wsdc])$"); 
     private static Pattern LITERAL_PATTERN = Pattern.compile("^(.*)\\\\(.)$"); 
@@ -93,6 +96,11 @@ public class Parser {
             return union(parse(matcher.group(1)));
         }
 
+        matcher = CHARACTER_CLASS.matcher(pattern);
+        if (matcher.find()) {
+            return union(parse(matcher.group(1)), parseCharacterClass(matcher.group(2)));
+        }
+        
         matcher = CUSTOM_RANDOM.matcher(pattern);
         if (matcher.find()) {
             return union(parse(matcher.group(1)), random(matcher.group(2)));
@@ -115,7 +123,7 @@ public class Parser {
             
         return null;
     }
-    
+
     private static Sexp parseQuantified(String source, Quantifier quantifier) {
         Sexp quantifiedSexp = null;
 
@@ -170,6 +178,29 @@ public class Parser {
             intersectionSexp.add(rhs);
         }
         return intersectionSexp;
+    }
+    
+    private static Sexp parseCharacterClass(String source) {
+        return parseCharacterClass(source, new Sexp(CHARCLASS));
+    }    
+    
+    private static Sexp parseCharacterClass(String pattern, Sexp sexp) {
+        Matcher matcher = Pattern.compile("(.*)(.\\-.)(.*)").matcher(pattern);
+        
+        if (matcher.matches()) {
+            String[] range = matcher.group(2).split("-");
+            
+            parseCharacterClass(matcher.group(1), sexp);
+            sexp.add(new Sexp(RANGE).add(literal(range[0])).add(literal(range[1])));
+            parseCharacterClass(matcher.group(3), sexp);
+            
+        } else if (!pattern.isEmpty()) {
+            for (String token : pattern.split("")) {
+                sexp.add(literal(token));
+            }
+        }
+        
+        return sexp;
     }
     
     private static Sexp literal(String word) {

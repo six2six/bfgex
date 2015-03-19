@@ -26,5 +26,27 @@ describe RegexGen do
       RegexGen.of("(\\w{5,7})|(\\d+)").should match("(\\w{5,7})|(\\d+)")
     end
 
+    it "should return value with chars from the set" do
+      RegexGen.of("[aeiou]{3}").should match("^[aeiou]{3}$")
+    end
+
+    it "should return value with chars within range" do
+      RegexGen.of("[a-f]{3}").should match("^[a-f]{3}$")
+    end
+
+    it "should return value from both character set and range" do
+      RegexGen.of("[0-9HAL]{3}").should match("^[0-9HAL]{3}$")
+      RegexGen.of("[HAL0-9]{3}").should match("^[HAL0-9]{3}$")
+    end
+
+    it "should return value with mixed exps" do
+      RegexGen.of("[0-9]{2}\\w{3}").should match("[0-9]{2}\\w{3}")
+      RegexGen.of("\\w{3}[0-9]{2}").should match("\\w{3}[0-9]{2}")
+      RegexGen.of("\\w{3}[0-9]{2}\\w{4}").should match("\\w{3}[0-9]{2}\\w{4}")
+    end
+
+    it "should work without a quantifier" do
+      RegexGen.of("[a-z]").should match("^[a-z]$")
+    end
   end
 end

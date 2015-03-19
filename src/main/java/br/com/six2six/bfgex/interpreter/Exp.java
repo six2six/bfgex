@@ -6,4 +6,6 @@ public enum Exp {
     INTERSECTION,
     RANDOM,
     QUANTIFY,
+    CHARCLASS,
+    RANGE
 }
