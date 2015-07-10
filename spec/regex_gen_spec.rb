@@ -34,6 +34,10 @@ describe RegexGen do
       RegexGen.of("[a-f]{3}").should match("^[a-f]{3}$")
     end
 
+    it "should return exact number of requested characters in range" do
+      RegexGen.of("[a-c]{100}").should match("^[a-c]{100}$")
+    end
+
     it "should return value from both character set and range" do
       RegexGen.of("[0-9HAL]{3}").should match("^[0-9HAL]{3}$")
       RegexGen.of("[HAL0-9]{3}").should match("^[HAL0-9]{3}$")

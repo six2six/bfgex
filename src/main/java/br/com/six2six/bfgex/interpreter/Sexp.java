@@ -76,7 +76,7 @@ public class Sexp {
         	result = reduce(expressions, quantity);
         	break;
         case CHARCLASS:
-            result = genValue(StringUtils.join(mapReduce(expressions), "").split(""), quantity == null ? new Quantifier(1) : quantity);
+            result = genValue(StringUtils.join(mapReduce(expressions), "").split("(?!^)"), quantity == null ? new Quantifier(1) : quantity);
             break;
         case RANGE:
             result = buildCharset(mapReduce(expressions));
