@@ -195,7 +195,7 @@ public class Parser {
             parseCharacterClass(matcher.group(3), sexp);
             
         } else if (!pattern.isEmpty()) {
-            for (String token : pattern.split("")) {
+            for (String token : pattern.split("(?!^)")) {
                 sexp.add(literal(token));
             }
         }
