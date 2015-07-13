@@ -5,7 +5,7 @@
 	<artifactId>bfgex</artifactId>
 	<packaging>jar</packaging>
 	<name>bfgex</name>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.1</version>
 	<description>random data from regex (java implementation of randexp)</description>
 	<url>https://github.com/six2six/bfgex</url>
 
