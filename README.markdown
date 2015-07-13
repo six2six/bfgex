@@ -1,5 +1,6 @@
 regex based generation
 =========================================
+[![Build Status](https://travis-ci.org/six2six/bfgex.svg?branch=master)](https://travis-ci.org/six2six/bfgex)
 
  use like a maven dependency on your project
 
